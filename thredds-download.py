@@ -4,8 +4,8 @@
 # Modified by Mike Smith 2/24/17 for data download
 from xml.dom import minidom
 import os
-import urllib2
-import urllib
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
 
 
 def create_dir(new_dir):
@@ -22,7 +22,7 @@ def create_dir(new_dir):
 
 def get_elements(url, tag_name, attribute_name):
     """Get elements from an XML file"""
-    usock = urllib2.urlopen(url)
+    usock = urllib.request.urlopen(url)
     xmldoc = minidom.parse(usock)
     usock.close()
     tags = xmldoc.getElementsByTagName(tag_name)
@@ -41,7 +41,7 @@ def main(server_url, request_url, output_dir):
         if (d[-3:]=='.nc'):
             files.append(d)
     count = 0
-    print files
+    print(files)
     split_file = files[0].split('/')
     build_dir = split_file[2].split('-')
     new_dir = os.path.join(output_dir, build_dir[1], build_dir[2], '{}-{}'.format(build_dir[3], build_dir[4]), 'data')
@@ -51,8 +51,8 @@ def main(server_url, request_url, output_dir):
         count +=1
         file_url = server_url + '/thredds/fileServer/' + f
         file_name = new_dir + '/' + file_url.split('/')[-1]
-        print 'Downloading ' + str(count) + ' of ' + str(len(files)) + ' ' + f
-        urllib.urlretrieve(file_url,file_name)
+        print('Downloading ' + str(count) + ' of ' + str(len(files)) + ' ' + f)
+        urllib.request.urlretrieve(file_url,file_name)
 
 
 # Run main function when in comand line mode        

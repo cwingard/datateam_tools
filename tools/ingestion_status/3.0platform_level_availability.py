@@ -4,7 +4,7 @@
 Created on Mon July 25 2017
 @author: leilabbb
 """
-from __future__ import division
+
 import datetime
 import pandas as pd
 import os
@@ -31,12 +31,12 @@ col_header = ['data_source', 'deployment#', 'Available', 'Missing', 'Pending', '
 
 for platform in os.listdir(maindir):
     if os.path.isdir(os.path.join(maindir, platform)):
-        print platform
+        print(platform)
         if not platform.startswith('CP05MOAS-A'):
             for item in os.listdir(os.path.join(maindir, platform, 'data')):
                 if item.endswith(key_file):
                     with open(os.path.join(maindir, platform, 'data', item), 'r') as csv_file:
-                        print item
+                        print(item)
                         df1 = pd.DataFrame()
                         filereader = pd.read_csv(csv_file)
                         filereader.fillna('', inplace=True)

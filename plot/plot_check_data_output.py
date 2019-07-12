@@ -51,7 +51,7 @@ for deployment in deployments:
 
     for row in tdf.itertuples():
         if not 'time' in row.variable:
-            print row.variable
+            print(row.variable)
             plt.plot(deploy_time, np.full((deploy_time.shape), 5), linewidth=10, color='blue')
             plt.plot(data_time, np.full((data_time.shape), 4), linewidth=10, color='green')
             plt.plot(data_time, np.full((data_time.shape), 3), linewidth=10, color='green')

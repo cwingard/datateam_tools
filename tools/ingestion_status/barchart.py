@@ -28,7 +28,7 @@ for item in os.listdir(rootdir):
     if item.startswith(platform):
         if item.endswith(key_file):
             if os.path.isfile(os.path.join(rootdir, item)):
-                print item
+                print(item)
                 with open(os.path.join(rootdir, item), 'r') as csv_file:
                     filereader = pd.read_csv(csv_file)
                     method_list = list(pd.unique(filereader['data_source'].ravel()))

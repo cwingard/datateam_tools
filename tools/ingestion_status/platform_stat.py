@@ -4,7 +4,7 @@
 Created on Mon July 25 2017
 @author: leilabbb
 """
-from __future__ import division
+
 import datetime
 import pandas as pd
 import numpy as np

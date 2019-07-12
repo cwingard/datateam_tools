@@ -42,4 +42,4 @@ def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token
     return [local_min, local_max]
 
 test = get_global_ranges("CE04OSPS","SF01B","2A-CTDPFA107","corrected_dissolved_oxygen")
-print test
+print(test)

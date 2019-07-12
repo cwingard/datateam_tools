@@ -217,9 +217,9 @@ def main(url, save_dir):
             datasets = [url]
             splitter = url.split('/')[-2].split('-')
         else:
-            print 'Unrecognized input. Input must be a string of the file location(s) or list of file(s)'
+            print('Unrecognized input. Input must be a string of the file location(s) or list of file(s)')
     else:
-        print 'Dataset must be in a string.'
+        print('Dataset must be in a string.')
 
     data = OrderedDict(deployments=OrderedDict())
     for dataset in datasets:
@@ -227,7 +227,7 @@ def main(url, save_dir):
         if 'ENG000000' not in filename:  # script will not analyze glider ENG data files
             logging.info('Processing {}'.format(str(dataset)))
             try:
-                print 'Opening file: {}'.format(dataset)
+                print(('Opening file: {}'.format(dataset)))
                 with xr.open_dataset(dataset, mask_and_scale=False) as ds:
                     ref_des = '{}-{}-{}'.format(ds.subsite, ds.node, ds.sensor)
                     deployment = np.unique(ds['deployment'].data)[0]
@@ -237,7 +237,7 @@ def main(url, save_dir):
                     deploy_info = get_deployment_information(qc_data, deployment)
 
                     if deploy_info is None:
-                        print 'info from deployment ' + str(deployment) + ' does not match data'
+                        print(('info from deployment ' + str(deployment) + ' does not match data'))
                         continue
 
                     data_start = ds.time_coverage_start + 'Z'
@@ -261,7 +261,7 @@ def main(url, save_dir):
 
                     deployment = 'D0000{}'.format(deployment)
 
-                    deployments = data['deployments'].keys()
+                    deployments = list(data['deployments'].keys())
 
                     # Add deployment to dictionary and initialize stream sub dictionary
                     if not deployment in deployments:
@@ -278,7 +278,7 @@ def main(url, save_dir):
                         data['deployments'][deployment]['data_times']['end'].append(data_end)
 
 
-                    streams = data['deployments'][deployment]['streams'].keys()
+                    streams = list(data['deployments'][deployment]['streams'].keys())
 
                     # Add stream to subdictionary inside deployment
                     if not ds.stream in streams:
@@ -286,9 +286,9 @@ def main(url, save_dir):
 
                     qc_df = parse_qc(ds)
 
-                    qc_vars = [x for x in qc_df.keys() if not 'test' in x]
+                    qc_vars = [x for x in list(qc_df.keys()) if not 'test' in x]
                     qc_df = qc_df.reset_index()
-                    variables = ds.data_vars.keys()
+                    variables = list(ds.data_vars.keys())
                     variables = eliminate_common_variables(variables)
                     variables = [x for x in variables if not 'qc' in x] # remove qc variables, because we don't care about them
 
@@ -327,7 +327,7 @@ def main(url, save_dir):
                                                                                                         vars_not_in_file=unmatch1,
                                                                                                         vars_not_in_db=unmatch2)
                     else:
-                        print filename + ' already in dictionary. Skipping'
+                        print((filename + ' already in dictionary. Skipping'))
 
                     for v in variables:
                         # print v
@@ -340,7 +340,7 @@ def main(url, save_dir):
                         if ds[v].dtype.kind == 'S' \
                                 or ds[v].dtype == np.dtype('datetime64[ns]') \
                                 or 'time' in v:
-                            dict_vars = data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'].keys()
+                            dict_vars = list(data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'].keys())
 
                             if not v in dict_vars:
                                 data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v] = OrderedDict(available = str(available))
@@ -369,7 +369,7 @@ def main(url, save_dir):
                                     fill_value = None
                                     fill_test = None
 
-                                dict_vars = data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'].keys()
+                                dict_vars = list(data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'].keys())
                                 if not v in dict_vars:
                                     data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v] = OrderedDict(available=str(available),
                                                                                                                                     all_nans=str(nan_test),
@@ -400,14 +400,14 @@ def main(url, save_dir):
                                         if tdf.empty:
                                             data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v][test] = []
                                         else:
-                                            data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v][test] = map(list, tdf.values)
+                                            data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v][test] = list(map(list, tdf.values))
 
                                 else:
                                     data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v]['global_range_test'] = None
                                     data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v]['dataqc_stuckvaluetest'] = None
                                     data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v]['dataqc_spiketest'] = None
                             else:
-                                dict_vars = data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'].keys()
+                                dict_vars = list(data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'].keys())
                                 if not v in dict_vars:
                                     data['deployments'][deployment]['streams'][ds.stream]['files'][filename]['variables'][v] = OrderedDict(available=str(available), all_nans=str(nan_test))
             except Exception as e:
@@ -416,7 +416,7 @@ def main(url, save_dir):
         else:
             pass
 
-    deployments = data['deployments'].keys()
+    deployments = list(data['deployments'].keys())
     for d in deployments:
         data['deployments'][d]['data_times']['start'].sort(key=natural_keys)
         data['deployments'][d]['data_times']['end'].sort(key=natural_keys)

@@ -53,7 +53,7 @@ for root, dirs, files in os.walk(rootdir):
             rootCP = root + item + '/'
             for rCP, dirCP, fileCP in os.walk(rootCP):
                 for f in fileCP:
-                    print f
+                    print(f)
                     if f.endswith(ingestion_file):
                         with open(os.path.join(rCP,f),'r') as csv_file:
                             filereader = pd.read_csv(csv_file)
@@ -121,7 +121,7 @@ for root, dirs, files in os.walk(rootdir):
                                                 if file_modified == compare_2_date:
                                                     file_of_today += 1
                                             else:
-                                                print file
+                                                print(file)
 
                                             kk += 1
 
@@ -175,11 +175,11 @@ for root, dirs, files in os.walk(rootdir):
 
 
 
-                                print row.Index, index_i, "--->", web_dir, ' : '
-                                print '           number of files =', file_num[index_i], kk
-                                print '           file <= 1k =', size1kless[index_i] #file_1K_size
-                                print '           file > 1K =', size1kplus[index_i]#file_1Kplus_size
-                                print '           file of today =', todayfile[index_i]#file_of_today
+                                print((row.Index, index_i, "--->", web_dir, ' : '))
+                                print(('           number of files =', file_num[index_i], kk))
+                                print(('           file <= 1k =', size1kless[index_i])) #file_1K_size
+                                print(('           file > 1K =', size1kplus[index_i]))#file_1Kplus_size
+                                print(('           file of today =', todayfile[index_i]))#file_of_today
 
                                 index_i += 1
 
@@ -196,4 +196,4 @@ for root, dirs, files in os.walk(rootdir):
                 outputfile = main + item + '/' + item + '_' + created_on + '_rawfiles_query' + ingestion_file.split('_ingest.csv')[0] +'.csv'
                 df.to_csv(outputfile, index=False, columns=mooring_header, na_rep='NaN', encoding='utf-8')
 
-print "time elapsed: {:.2f}s".format(time.time() - start_time)
+print(("time elapsed: {:.2f}s".format(time.time() - start_time)))

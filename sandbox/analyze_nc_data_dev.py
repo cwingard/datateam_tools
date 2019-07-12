@@ -19,5 +19,5 @@ for url in tds_catalogs:
 	try:
 		check_data.main(url, save_dir)
 	except UnboundLocalError:
-		print "This url points to an empty catalog"
+		print("This url points to an empty catalog")
 		continue

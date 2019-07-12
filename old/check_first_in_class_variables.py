@@ -101,14 +101,14 @@ for ref in ref_degs: # iterate through reference designators
 
     # Check if there is NOT any data with this reference designator
     if not check_ref_des(ref, links):
-        print ref + ' does not exist in TDS. Failing test.'
+        print(ref + ' does not exist in TDS. Failing test.')
         for row in temp.itertuples(): # Loop through every row in the csv containing this reference designator
             if perform_test(row.Test) is 1: # When it's test number 1, set the Status equal to fail
                 df.loc[row.Index, 'Status'] = 'Fail'
             else: # for each subsequent row, set it to 'Blocked - Instrument Unavailable'
                 df.loc[row.Index, 'Status'] = 'Blocked - Instrument Unavailable'
     else:
-        print ref + ' exists. Proceeding.'
+        print(ref + ' exists. Proceeding.')
         streams = list(pd.unique(temp.StreamID.ravel())) # Get unique streams for an available reference designator
         for stream in streams: # Iterate through the streams
             if pd.isnull(stream): # If the stream is null
@@ -129,12 +129,12 @@ for ref in ref_degs: # iterate through reference designators
                             df.loc[row.Index, 'Status'] = 'Blocked - Stream Unavailable'
                 else:
                     dataset_url = tds + fname
-                    print dataset_url
+                    print(dataset_url)
                     # try:
                     with xr.open_dataset(dataset_url, engine='pydap', mask_and_scale=False) as ds:
                         # pdb.pm()
                         temp_df2 = df2.loc[(df2.ReferenceDesignator == ref) & (df2.StreamID == stream)]
-                        ds_vars = ds.data_vars.keys()  # Stream file
+                        ds_vars = list(ds.data_vars.keys())  # Stream file
                         # ds_vars.sort()
                         # ds_vars = [x.encode('UTF8') for x in ds_vars]
                         database_vars = pd.unique(temp_df2.ParameterID.ravel()).tolist()  # Database file

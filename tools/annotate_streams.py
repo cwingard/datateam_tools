@@ -106,7 +106,7 @@ def extract_gaps(data, stream_csv, stream_csv_other, stream_csv_issues, stream_n
     format = '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n'
     # read in deployment information from asset management and start and end dates of the data requested by deployment
     deployment_list = data['deployments']
-    deployment_list_sorted = deployment_list.keys()
+    deployment_list_sorted = list(deployment_list.keys())
     deployment_list_sorted.sort(key = natural_keys)  # sorts the deployments
 
     for d in deployment_list_sorted:
@@ -137,7 +137,7 @@ def extract_gaps(data, stream_csv, stream_csv_other, stream_csv_issues, stream_n
 
             stream_data = temp['streams'][s]
             file_list = stream_data['files'] # list of files for the deployment
-            file_list_sorted = file_list.keys()
+            file_list_sorted = list(file_list.keys())
             file_list_sorted.sort(key=natural_keys)  # sorts the data files
             gap_dict = dict(time_gaps=[])
 

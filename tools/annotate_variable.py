@@ -44,7 +44,7 @@ def annotate_variable(data, parameter_csv, parameter_issues_csv, stream_name, re
 
     format = '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n'
     deployment_list = data['deployments']
-    deployment_list_sorted = deployment_list.keys()
+    deployment_list_sorted = list(deployment_list.keys())
     deployment_list_sorted.sort(key = natural_keys)  # sorts the deployments
 
     deploy_cnt = 0
@@ -58,7 +58,7 @@ def annotate_variable(data, parameter_csv, parameter_issues_csv, stream_name, re
         deployment_data_end = pd.to_datetime(deployment_data_end).strftime('%Y-%m-%dT%H:%M:%SZ')
 
         file_list = data['deployments'][d]['streams'][s]['files']
-        file_list_sorted = file_list.keys()
+        file_list_sorted = list(file_list.keys())
         file_list_sorted.sort(key = natural_keys)  # sorts the files
 
 

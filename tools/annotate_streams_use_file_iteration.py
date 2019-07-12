@@ -46,7 +46,7 @@ def natural_keys(text):
 def extract_gaps(data, stream_csv, stream_csv_other, stream_csv_issues, stream_name, user):
     # read in deployment information from asset management and start and end dates of the data requested by deployment
     deployment_list = data['deployments']
-    deployment_list_sorted = deployment_list.keys()
+    deployment_list_sorted = list(deployment_list.keys())
     deployment_list_sorted.sort(key = natural_keys)  # sorts the deployments
 
     for d in deployment_list_sorted:
@@ -73,7 +73,7 @@ def extract_gaps(data, stream_csv, stream_csv_other, stream_csv_issues, stream_n
                 file.write('%s,%s,%s,%s,%s,%s,%s,%s,%s\n' % newline)
 
             file_list = data['deployments'][d]['streams'][s]['files'] # list of files for the deployment
-            file_list_sorted = file_list.keys()
+            file_list_sorted = list(file_list.keys())
             file_list_sorted.sort(key = natural_keys)  # sorts the data files
 
             cnf = 0  # to count files
@@ -111,7 +111,7 @@ def extract_gaps(data, stream_csv, stream_csv_other, stream_csv_issues, stream_n
                                 file.write('%s,%s,%s,%s,%s,%s,%s,%s,%s\n' % newline)
                     else: # combine annotations if the gap between files is < 1 day
                         if timedelta < pd.Timedelta(days=1):
-                            print cnf, var_gap_end
+                            print((cnf, var_gap_end))
                             if cnf is len(file_list) - 1:  # last file, check against deployment end date from asset management
                                 newline = (stream, deployment, var_gap_end, data_end_file, '', 'NOT_EVALUATED', '',
                                            'check: evaluate parameters', user)

@@ -58,17 +58,17 @@ for rf in reference_designators:
     if inst_genre[0] == "Science":
         ref_sci.append(rf)
         ref_num += 1
-print ref_num
-print ref_sci
+print(ref_num)
+print(ref_sci)
 
 cnt = 0
 ii_index = 1.5
 y_list = []
 for ref_des in ref_sci:
-    print ref_des
+    print(ref_des)
     ind_rr = df.loc[(df['reference_designator'] == ref_des)]
     data_sources = list(pd.unique(ind_rr['data_source'].ravel()))
-    print data_sources
+    print(data_sources)
     plt.grid()
     plt.ylim([0, (ref_num*3.5)]) #len(reference_designators)
     plt.tick_params(axis='y', which='both', labelleft='off', labelright='on')
@@ -80,7 +80,7 @@ for ref_des in ref_sci:
         start_dep  = ind_tr['startDateTime'].ravel()
         end_dep    = ind_tr['stopDateTime'].ravel()
         data_stats = list(pd.unique(ind_tr['Automated_status'].ravel()))
-        print data_stats
+        print(data_stats)
 
         deploy_index = np.full((2,end_dep.size), ii_index)
         deploy_index = np.array(deploy_index)
@@ -100,7 +100,7 @@ for ref_des in ref_sci:
             d_index = np.array(d_index)
             plt.plot(deploy_time, d_index, c='k', marker='v')
             for jj in range(len(str_dep)):
-                print str_dep[jj]
+                print((str_dep[jj]))
                 plt.text(deploy_time[0][jj], 0.7, str_dep[jj], style='italic',fontsize=9)
 
 
@@ -128,7 +128,7 @@ for ref_des in ref_sci:
     y_list.append(ii_index-3)
 
 y = np.array(y_list)
-print y, len(y) , len(ref_sci)
+print((y, len(y) , len(ref_sci)))
 
 plt.yticks(y, ref_sci,fontsize=9)
 plt.xticks(rotation=20)

@@ -17,13 +17,13 @@ import datetime
 def convert_osu_file(file, sheet_names):
     for s in sheet_names:
         name = str(s)
-        print '\nConverting sheet name: %s' %name
+        print('\nConverting sheet name: %s' %name)
         f = pd.read_excel(file, sheetname=name, skiprows=1)
 
         for i,j in f.iterrows():
             ctd_sn = int(j['SN'])
             ctd_uid = 'CGINS-CTDGVM-' + '{0:05d}'.format(ctd_sn)
-            print ctd_uid
+            print(ctd_uid)
             ctd_inst = 'CTDGVM'
             ctd_caldate_str = str(j['Cal Date'])[0:10].replace('-','')
             ctd_caldate_num = int(nc.date2num(j['Cal Date'],'seconds since 1970-01-01'))*1000
@@ -33,7 +33,7 @@ def convert_osu_file(file, sheet_names):
 
             do_sn = int(j['SN.3'])
             do_uid = 'CGINS-DOSTAM-' + '{0:05d}'.format(do_sn)
-            print do_uid
+            print(do_uid)
             do_inst = 'DOSTAM'
             do_caldate_str = str(j['Cal Date.3'])[0:10].replace('-','')
             do_caldate_num = int(nc.date2num(j['Cal Date.3'],'seconds since 1970-01-01'))*1000
@@ -45,13 +45,13 @@ def convert_osu_file(file, sheet_names):
 def convert_whoi_file(file, sheet_names):
     for s in sheet_names:
         name = str(s)
-        print '\nConverting sheet name: %s' %name
+        print('\nConverting sheet name: %s' %name)
         c = {col: str for col in (1, 3)} # read in the date columns as strings instead of floats
         f = pd.read_excel(file, sheetname=name, converters=c)
 
         for i,j in f.iterrows():
             uid = j['Sensor_UID']
-            print uid
+            print(uid)
             sn = int(uid.split('-')[-1])
             inst = uid.split('-')[1]
             caldate1_str = j['Cal_Date_1']
@@ -95,7 +95,7 @@ def write_csv(uid, caldate_str, caldate_num, sn, sdir):
 
 def main(dir, input_files):
     for ifile in input_files:
-        print '\nConverting file: %s' %ifile
+        print('\nConverting file: %s' %ifile)
         file = os.path.join(dir,ifile)
         sheet_names = get_sheetnames(file)
 

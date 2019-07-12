@@ -11,14 +11,14 @@ url: THREDDS directory containing .nc files
 """
 
 from xml.dom import minidom
-import urllib2
-import urllib
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
 import os
 
 
 def get_elements(url, tag_name, attribute_name):
     """Get elements from an XML file"""
-    usock = urllib2.urlopen(url)
+    usock = urllib.request.urlopen(url)
     xmldoc = minidom.parse(usock)
     usock.close()
     tags = xmldoc.getElementsByTagName(tag_name)
@@ -42,15 +42,15 @@ def main(output_dir, url):
         if (d[-3:]=='.nc'):
             files.append(d)
     count = 0
-    print files
+    print(files)
     for f in files:
         count +=1
         file_url = server_url + '/thredds/fileServer/' + f
         file_name = output_dir + '/' + file_url.split('/')[-1]
         #     file_prefix = file_url.split('/')[-1][:-3]
         #     file_name = file_prefix + '_' + str(count) + '.nc'
-        print 'Downloading ' + str(count) + ' of ' + str(len(files)) + ' ' + f
-        urllib.urlretrieve(file_url,file_name)
+        print(('Downloading ' + str(count) + ' of ' + str(len(files)) + ' ' + f))
+        urllib.request.urlretrieve(file_url,file_name)
 
 
 if __name__ == '__main__':

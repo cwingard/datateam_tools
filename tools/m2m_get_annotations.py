@@ -64,7 +64,7 @@ def write_all_annotations(username, token, f, session):
     # write annotations if no reference designator is specified
     anno_url = 'https://ooinet.oceanobservatories.org/api/m2m/12580/anno/'
     loop_ids = get_ids(username, token, session)
-    print 'Writing annotations'
+    print('Writing annotations')
 
     for x in loop_ids:
         url = anno_url + str(x)
@@ -88,7 +88,7 @@ def write_refdes_annotations(username, token, refdes_list, outfile, session):
     # write annotations if any reference designator is specified
     anno_url = 'https://ooinet.oceanobservatories.org/api/m2m/12580/anno/find'
     today_date = int(datetime.now().strftime("%s")) * 1000 # current date
-    print 'Writing annotations'
+    print('Writing annotations')
 
     id_list = []
     for x in refdes_list:
@@ -133,7 +133,7 @@ def main(username, token, refdes, saveDir):
             refdes_list = []
             frefdes = format_inputs(refdes)
             for i in frefdes:
-                print i
+                print(i)
                 if len(i) == 8:
                     url = sensor_inv + i
                     node_info = session.get(url, auth=(username, token))

@@ -4,7 +4,7 @@
 Created on Mon July 25 2017
 @author: leilabbb
 """
-from __future__ import division
+
 import datetime
 import pandas as pd
 import os
@@ -46,7 +46,7 @@ for item in os.listdir(rootdir):
                     deploy_list = list(pd.unique(filereader['deployment#'].ravel()))
 
                     for refdesx in refdes_list:
-                        print refdesx
+                        print(refdesx)
                         indx = filebase.loc[(filebase['refdes_list'] == refdesx)]
                         method_list = list(pd.unique(indx['method_list'].ravel()))
                         #df = pd.DataFrame(columns=col_header)
@@ -139,7 +139,7 @@ for item in os.listdir(rootdir):
                                 #df1 = pd.DataFrame([[refdesx, methodx, deployx, counta, percenta, countm, percentm, note, start, end]], columns=col_header)
                                 #df = df.append(df1)
                                 #print 'df', df.values
-                                print deployx, start, end
+                                print((deployx, start, end))
                                 if start is not '':
                                     start = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S")
                                     start_x = 'D0' + str(deployx) + '_' + str(start.year) + '-' + str(start.month)

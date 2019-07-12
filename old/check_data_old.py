@@ -179,7 +179,7 @@ def main(url, save_dir):
         elif os.path.exists(url):
             datasets = glob.glob(url + '/*.nc')
         else:
-            print 'Unrecognized input. Input must be a string of the file location(s) or list of file(s)'
+            print('Unrecognized input. Input must be a string of the file location(s) or list of file(s)')
     elif type(url) is list:
         datasets = url
 
@@ -187,13 +187,13 @@ def main(url, save_dir):
     for dataset in datasets:
         logging.info('Processing {}'.format(str(dataset)))
         try:
-            print 'Opening file: {}'.format(dataset)
+            print('Opening file: {}'.format(dataset))
             with xr.open_dataset(dataset, mask_and_scale=False) as ds:
                 qc_df = parse_qc(ds)
-                qc_vars = [x for x in qc_df.keys() if not 'test' in x]
+                qc_vars = [x for x in list(qc_df.keys()) if not 'test' in x]
                 qc_df = qc_df.reset_index()
                 deployment = np.unique(ds['deployment'].data)[0]
-                variables = ds.data_vars.keys()
+                variables = list(ds.data_vars.keys())
                 variables = eliminate_common_variables(variables)
                 variables = [x for x in variables if not 'qc' in x] # remove qc variables, because we don't care about them
                 ref_des = '{}-{}-{}'.format(ds.subsite, ds.node, ds.sensor)
@@ -237,7 +237,7 @@ def main(url, save_dir):
                     time_test = False
 
                 for v in variables:
-                    print v
+                    print(v)
                     # Availability test
                     if v in ref_des_dict[ds.stream]:
                         available = True
@@ -311,7 +311,7 @@ def main(url, save_dir):
                                     if tdf.empty:
                                         temp_list.append([])
                                     else:
-                                        temp_list.append(map(list, tdf.values))
+                                        temp_list.append(list(map(list, tdf.values)))
                                 temp_tuple = data_tuple + tuple(temp_list)
                                 data.append(temp_tuple)
                             else:

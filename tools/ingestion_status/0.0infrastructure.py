@@ -38,7 +38,7 @@ for rf in refdes:
     if pl == 'MOAS':
         if gl == glider_name:
             filename = platform_name + '-' + glider_name
-            print rf
+            print(rf)
             ind_s = rfd.loc[(rfd['reference_designator'] == rf)]
             method = list(pd.unique(ind_s['method'].ravel()))
 
@@ -51,18 +51,18 @@ for rf in refdes:
                 # parser.replace(np.nan, '', regex=True)
                 type = list(pd.unique(ind_d['instrument_type'].ravel()))
 
-                print 'report:'
+                print('report:')
                 if len(type) > 1:
-                    print len(type), 'instrument should be either science or engineering not both'
-                    print type
+                    print((len(type), 'instrument should be either science or engineering not both'))
+                    print(type)
 
                 if len(driver) > 1:
-                    print len(driver), 'more than one driver'
-                    print driver
+                    print((len(driver), 'more than one driver'))
+                    print(driver)
 
                 if len(parser) > 1:
-                    print len(parser), 'more than one parser'
-                    print parser
+                    print((len(parser), 'more than one parser'))
+                    print(parser)
 
                 refdes_list.append(rf)
                 method_list.append(md)
@@ -84,18 +84,18 @@ for rf in refdes:
             # parser.replace(np.nan, '', regex=True)
             type = list(pd.unique(ind_d['instrument_type'].ravel()))
 
-            print 'report:'
+            print('report:')
             if len(type) > 1:
-                print len(type), 'instrument should be either science or engineering not both'
-                print type
+                print((len(type), 'instrument should be either science or engineering not both'))
+                print(type)
 
             if len(driver) > 1:
-                print len(driver), 'more than one driver'
-                print driver
+                print((len(driver), 'more than one driver'))
+                print(driver)
 
             if len(parser) > 1:
-                print len(parser), 'more than one parser'
-                print parser
+                print((len(parser), 'more than one parser'))
+                print(parser)
 
             refdes_list.append(rf)
             method_list.append(md)
@@ -103,10 +103,10 @@ for rf in refdes:
 
             parserDriver_list.append('mi.dataset.driver.' + parser[0] + '.' + driver[0])
 
-print len(refdes_list), refdes_list
-print len(method_list), method_list
-print len(type_list), type_list
-print len(parserDriver_list), parserDriver_list
+print((len(refdes_list), refdes_list))
+print((len(method_list), method_list))
+print((len(type_list), type_list))
+print((len(parserDriver_list), parserDriver_list))
 
 
 data_list = [refdes_list] #, method_list, type_list, parserDriver_list

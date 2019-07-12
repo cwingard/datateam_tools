@@ -4,7 +4,7 @@
 Created on Mon July 25 2017
 @author: leilabbb
 """
-from __future__ import division
+
 import datetime
 import pandas as pd
 import numpy as np
@@ -260,18 +260,18 @@ for platform in os.listdir(maindir):
                             #print df1.values
                 dfaa = dfaa.replace(0, np.NaN)
                 rows_aa, columns_aa = dfaa.shape
-                print(dfaa.columns[0:10])
+                print((dfaa.columns[0:10]))
                 dfaa = dfaa.dropna(subset=dfaa.columns[0:10], how='all')
 
                 dfmm = dfmm.replace(0, np.NaN)
                 rows_mm, columns_mm = dfmm.shape
-                print(dfmm.columns[0:10])
+                print((dfmm.columns[0:10]))
                 dfmm = dfmm.dropna(subset=dfmm.columns[0:10], how='all')
                 dfmm.dropna(axis=1, how='all')
 
                 dfpp = dfpp.replace(0, np.NaN)
                 rows_pp, columns_pp = dfpp.shape
-                print(dfpp.columns[0:10])
+                print((dfpp.columns[0:10]))
                 dfpp = dfpp.dropna(subset=dfpp.columns[0:10], how='all')
 
                 # print outputfileind3['status'].values

@@ -85,7 +85,7 @@ def main(ingest_file, save_dir, dav_mount, file_format='csv', splitter='/OMC/'):
         out_ds = os.path.join(out_rd, data_source); make_dir(out_ds)
 
         run(base_path, parser, matches, file_format, out_ds)
-        path, dirs, files = os.walk(out_ds).next()
+        path, dirs, files = next(os.walk(out_ds))
         file_count_new = len(files)
         data.append((refdeg, data_source, parser, web_dir, file_count_new))
 
