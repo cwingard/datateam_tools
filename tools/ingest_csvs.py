@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import argparse
 import netrc
-import os
 import pprint
 import re
 import requests
@@ -25,10 +24,11 @@ BASE_URL = 'https://ooinet.oceanobservatories.org'
 credentials = netrc.netrc()
 API_KEY, USERNAME, API_TOKEN = credentials.authenticators('ooinet.oceanobservatories.org')
 
+
 def load_ingest_sheet(ingest_csv, ingest_type):
     df = pd.read_csv(ingest_csv, usecols=[0, 1, 2, 3])
     df['username'] = USERNAME
-    df['deployment'] = get_deployment_number(ingest_csv)
+    df['deployment'] = get_deployment_number(df.filename_mask.values)
     df['state'] = 'RUN'
     df['priority'] = PRIORITY
     if 'telemetered' in ingest_type:
@@ -38,47 +38,15 @@ def load_ingest_sheet(ingest_csv, ingest_type):
 
     return df
 
-def get_deployment_number(csv):
-    split_csv = csv.split('_')
-    deployment_number = int(re.sub('.*?([0-9]*)$', r'\1', split_csv[1]))
+
+def get_deployment_number(filename_mask):
+    deployment_number = []
+    for fm in filename_mask:
+        split_fm = fm.split('/')
+        deployment_number.append(int(re.sub('.*?([0-9]*)$', r'\1', split_fm[5])))
+
     return deployment_number
 
-def get_active_ingestions_for_refdes(url, key, token, ref_des):
-    r = requests.get('{}/api/m2m/12589/ingestrequest/jobcounts?refDes={}&groupBy=ingestRequestId,status'.format(url, ref_des),
-                     auth=(key, token))
-    if r.ok:
-        return r
-    else:
-        pass
-
-def change_recurring_ingestion(key, token, recurring):
-    state_change = pd.DataFrame()
-    if not recurring.empty:
-        print('Recurring ingestions found for these reference designators.')
-        print(recurring)
-        state = input('Persist, cancel, or suspend these ingests? <persist>/cancel/suspend: ') or 'persist'
-        if state in ('cancel', 'suspend'):
-            for i in recurring.iter():
-                r = change_ingest_state(BASE_URL, key, token, i, state.upper())
-                if r.status_code == HTTP_STATUS_OK:
-                    state_json = r.json()
-                else:
-                    print(('Status Code: {}, Response: {}'.format(r.status_code, r.content)))
-                    continue
-                tdf = pd.DataFrame([state_json], columns=list(state_json.keys()))
-                state_change = state_change.append(tdf, ignore_index=True)
-                print(state_change)
-
-    return state_change
-
-def change_ingest_state(url, key, token, ingest_id, state):
-    r = requests.put('{}/api/m2m/12589/ingestrequest/{}'.format(url, ingest_id),
-                     json=dict(id=ingest_id, state=state),
-                     auth=(key, token))
-    if r.ok:
-        return r
-    else:
-        pass
 
 def build_ingest_dict(ingest_info):
     option_dict = {}
@@ -101,6 +69,7 @@ def build_ingest_dict(ingest_info):
 
     return request_dict
 
+
 def ingest_data(url, key, token, data_dict):
     r = requests.post('{}/api/m2m/12589/ingestrequest/'.format(url), json=data_dict, headers=HEADERS, auth=(key, token))
     if r.ok:
@@ -108,37 +77,6 @@ def ingest_data(url, key, token, data_dict):
     else:
         pass
 
-def check_ingest_request(url, key, token, ingest_id):
-    r = requests.get('{}/api/m2m/12589/ingestrequest/{}'.format(url, ingest_id),
-                     auth=(key, token))
-    if r.ok:
-        return r
-    else:
-        pass
-
-
-def check_ingest_file_status(url, key, token, ingest_id):
-    r = requests.get('{}/api/m2m/12589/ingestrequest/jobcounts?ingestRequestId={}&groupBy=status'.format(url, ingest_id),
-                     auth=(key, token))
-    if r.ok:
-        return r
-    else:
-        pass
-
-def splitall(path):
-    allparts = []
-    while 1:
-        parts = os.path.split(path)
-        if parts[0] == path:  # sentinel for absolute paths
-            allparts.insert(0, parts[0])
-            break
-        elif parts[1] == path: # sentinel for relative paths
-            allparts.insert(0, parts[1])
-            break
-        else:
-            path = parts[0]
-            allparts.insert(0, parts[1])
-    return allparts
 
 def main(argv=None):
     if argv is None:

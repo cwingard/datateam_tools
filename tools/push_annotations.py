@@ -44,7 +44,7 @@ def check_dates(beginDate, endDate):
             return beginDT, endDT
         else:
             raise Exception('beginDate (%s) is after endDate (%s)' % (begin_DT, end_DT))
-    except ValueError:
+    except (TypeError, ValueError):
         endDT = ''
         return beginDT, endDT
 
